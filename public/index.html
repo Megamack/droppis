@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <title>File upload Node.</title>
+  </head>
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/basic.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css">
+  
+  
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+
+  <body>
+      <button id="submit-all">Submit all files</button>
+<!--
+      <div class="dz-preview dz-file-preview">
+          <div class="dz-image"><img data-dz-thumbnail /></div>
+          <div class="dz-details">
+              <div class="dz-size"><span data-dz-size></span></div>
+              <div class="dz-filename"><span data-dz-name></span></div>
+          </div>
+          <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+          <div class="dz-error-message"><span data-dz-errormessage></span></div>
+          <input type="text" placeholder="Title">
+      </div>
+-->
+
+
+   
+      <div id="tpl">
+        <div class="dz-preview dz-file-preview well" id="dz-preview-template">
+          <div class="dz-details">
+            <div class="dz-filename"><span data-dz-name></span></div>
+            <div class="dz-size" data-dz-size></div>
+          </div>
+          <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+          <div class="dz-success-mark"><span></span></div>
+          <div class="dz-error-mark"><span></span></div>
+          <div class="dz-error-message"><span data-dz-errormessage></span></div>
+          
+        </div>
+    </div>
+
+      <form action="/upload" class="dropzone" id="my-dropzone">
+
+       
+        </form>
+       
+<!--
+      <form id="my" enctype="multipart/form-data" action="/upload" method="post" class="dropzone">
+
+        <div class="fallback">
+          <input name="file" type="file" />
+        </div>
+
+
+        <script type="text/javascript">
+          /*Dropzone.options.my = {
+            paramName: "photo", // The name that will be used to transfer the file
+            maxFilesize: 1024, // MB
+            autoProcessQueue: false,
+            url: "/upload"
+          };*/
+        </script>
+      </form>
+
+
+      <button id="imgsubbutt">Submit all files</button>
+      -->
+<script>
+
+
+
+  Dropzone.options.myDropzone = {
+   
+// Prevents Dropzone from uploading dropped files immediately
+autoProcessQueue: false,
+previewTemplate : document.querySelector('#tpl').innerHTML,
+
+init: function() {
+  var submitButton = document.querySelector("#submit-all")
+      myDropzone = this; // closure
+      
+  submitButton.addEventListener("click", function() {
+    myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+  });
+  myDropzone.on("sendingmultiple", function(file, xhr, formData) {
+      //Add additional data to the upload
+      formData.append('username', $('#username').val());
+      formData.append('password', $('#password').val());       
+    });
+  // You might want to show the submit button only when 
+  // files are dropped here:
+  this.on("addedfile", function() {
+    // Show submit button here and/or inform user to click it.
+  });
+
+}
+};
+  /*
+Dropzone.autoDiscover = false;
+
+var myDropzone = new Dropzone(element, {
+  url: "/upload.php",                        
+  autoProcessQueue: false,
+});
+
+$('#imgsubbutt').click(function(){           
+  myDropzone.processQueue();
+});
+
+$('#imgsubbutt').click(function(){           
+  console.log("HEllo upload");
+  Dropzone.processQueue();
+});*/
+</script>
+<!--
+      <form id="uploadForm"
+          enctype="multipart/form-data"
+          action="http://localhost/upload"
+          method="post">
+      <input type="file" name="userPhoto" multiple />
+      <input type="submit" value="Upload Image" name="submit">
+      <input type='text' id='random' name='random'><br>
+      <span id = "status"></span>
+    </form>
+-->
+
+  </body>
+
+  
+
+
+
+
+  <!--
+  <script>
+  $(document).ready(function() {
+     $('#uploadForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+          status('Error: ' + xhr.status);
+            },
+            success: function(response) {
+        console.log(response)
+            $("#status").empty().text(response);
+            }
+    });
+    return false;
+    });    
+});
+</script>
+-->
+</html>
